@@ -1,0 +1,20 @@
+<app-load-panel #appLoadPanel></app-load-panel>
+
+<dx-box direction="row" [width]="headerWidth">
+    <dxi-item [ratio]="0.7">
+      <div class="dx-field">
+        <div>Region</div>
+        <dx-select-box [dataSource]="regions" valueExpr="Id" [(value)]="regionId" displayExpr="Name"
+          placeholder="Select a region..." (onValueChanged)="onRegionChanged($event)" [searchEnabled]="true">
+        </dx-select-box>
+      </div>
+    </dxi-item>
+    <dxi-item [ratio]="1">
+      <div class="dx-field">
+        <div>Plant</div>
+        <dx-select-box [dataSource]="plants" valueExpr="Id" [(value)]="plantId" displayExpr="Name"
+          placeholder="Select a plant..." (onValueChanged)="onPlantChanged($event)" [searchEnabled]="true">
+        </dx-select-box>
+      </div>
+    </dxi-item>  
+</dx-box>

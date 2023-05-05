@@ -1,0 +1,100 @@
+<div class="header">
+  <div class="dx-fieldset-header">{{pageTitle}}</div>
+</div>
+
+<dx-box direction="row" [width]="headerWidth" *ngIf="hasViewPermission">
+  <dxi-item [ratio]="1">
+    <div class="dx-field">
+      <div>Region</div>
+      <dx-select-box [dataSource]="regions" valueExpr="Id" [(value)]="regionId" displayExpr="Name"
+        placeholder="Select a region..." [(isValid)]="isRegionValid" [(validationError)]="regionRequired"
+        (onValueChanged)="onRegionChanged($event)" [searchEnabled]="true">
+      </dx-select-box>
+    </div>
+  </dxi-item>
+  <dxi-item [ratio]="1">
+    <div class="dx-field">
+      <div>Plant</div>
+      <dx-select-box [dataSource]="plants" valueExpr="Id" [(value)]="plantId" displayExpr="Name"
+        placeholder="Select a plant..." [(isValid)]="isPlantValid" [(validationError)]="plantRequired"
+        (onValueChanged)="onPlantChanged($event)" [searchEnabled]="true">
+      </dx-select-box>
+    </div>
+  </dxi-item>
+  <dxi-item [ratio]="1">
+    <div class="dx-field">
+      <div>Event Category</div>
+      <dx-select-box [dataSource]="eventCategories" valueExpr="Id" [(value)]="eventCategoryId" displayExpr="Name"
+        placeholder="Select an event category..." [(isValid)]="isEventCategoryValid"
+        [(validationError)]="eventCategoryRequired" (onValueChanged)="onEventCategoryChanged($event)"
+        [searchEnabled]="true">
+      </dx-select-box>
+    </div>
+  </dxi-item>
+  <dxi-item [ratio]="1.5">
+    <div class="dx-field">
+      <div>Equipment Tag</div>
+      <dx-select-box [dataSource]="equipmentTags" valueExpr="Id" [(value)]="equipmentTagId" displayExpr="Name"
+        (onValueChanged)="onEquipmentTagChanged($event)" placeholder="Select equipment tag..." [searchEnabled]="true" [showClearButton]="true">
+      </dx-select-box>
+    </div>
+  </dxi-item>
+</dx-box>
+<dx-box direction="row" [width]="headerWidth" *ngIf="hasViewPermission">
+  <dxi-item [ratio]="1">
+    <div class="dx-field">
+      <div>Start Date</div>
+      <dx-date-box [displayFormat]="format" [value]="dateInit" (onValueChanged)="onStartDateChanged($event)"
+        [(isValid)]="isStartDateValid" [(validationError)]="startDateValidation">
+      </dx-date-box>
+    </div>
+  </dxi-item>
+  <dxi-item [ratio]="1">
+    <div class="dx-field">
+      <div>End Date</div>
+      <dx-date-box [displayFormat]="format" [value]="dateEnd" (onValueChanged)="onEndDateChanged($event)"
+        [(isValid)]="isEndDateValid" [(validationError)]="endDateValidation">
+      </dx-date-box>
+    </div>
+  </dxi-item>
+  <dxi-item [ratio]="1">
+    <div class="dx-field button-align">
+      <dx-button text="Load" width="100" type="default" (onClick)="loadClick()" [useSubmitBehavior]="false"></dx-button>
+    </div>
+  </dxi-item>
+</dx-box>
+
+<div id="reportDataGrid" *ngIf="hasViewPermission">
+  <dx-data-grid #dataGrid [dataSource]="metricReportData" [columnAutoWidth]="true" [showRowLines]="true"
+    [allowColumnResizing]="true" [hoverStateEnabled]="true" [customizeColumns]="customizeColumns"
+    [rowAlternationEnabled]="true" (onCellPrepared)="onCellPrepared($event)">
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxo-export [enabled]="true" [fileName]="getExcelFileName()"></dxo-export>
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+    <dxi-column *ngFor="let column of columns" dataField="{{column.field}}" [encodeHtml]="false"
+      caption="{{column.cap}}" [fixed]='column.fixed' cellTemplate="cellTemplate" [dataType]='column.dataType'>
+    </dxi-column>
+    <div *dxTemplate="let d of 'cellTemplate'">
+      <div *ngIf="d.column.dataField == 'Info'; else dataColumns">
+        <span id="info" (mouseover)="showTooltip(d)" (mouseout)="hideTooltip(d)" class="fa fa-info-circle"></span>
+        <div class="float-right">
+          <div>
+            <a target="_blank" href='{{getChartUrl(d)}}'>
+              <span class="fa fa-line-chart"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <ng-template #dataColumns>
+        <span>{{d.value}}</span>
+      </ng-template>
+    </div>
+  </dx-data-grid>
+</div>
+<dx-tooltip target="#info" style="align-items: inherit">
+  <div *dxTemplate="let data = data of 'content'">
+    <div>{{insertMessage}}</div>
+    <div>{{updateMessage}}</div>
+  </div>
+</dx-tooltip>

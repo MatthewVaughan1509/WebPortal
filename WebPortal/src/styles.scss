@@ -1,0 +1,33 @@
+html *
+{
+   font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Verdana, sans-serif;
+}
+
+.dx-field {
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+.dx-fieldset-header {
+    font-size: 150% !important;
+    color: #337ab7 !important;
+    box-shadow: 0 1px 3px #c5c5c5,0 1px 2px #c5c5c5;
+    padding: 10px;
+    margin: -10px;
+}
+
+.header {
+    padding-bottom: 20px;
+}
+.fa-info-circle {
+    color: #337ab7;
+ }
+
+.readOnlyPanel{
+    pointer-events: none;
+}
+
+dx-drop-down-button[type=success] {
+    background-color: #5cb85c;
+    border-radius: 5px;
+}

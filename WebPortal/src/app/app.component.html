@@ -1,0 +1,14 @@
+<ng-container>
+    <app-load-panel></app-load-panel>
+    <app-toast></app-toast>
+    <div class="main">
+        <div class="main-content">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <app-error-notification></app-error-notification>
+</ng-container>
+
+<ng-template #notAuthorized>
+    <router-outlet></router-outlet>
+</ng-template>

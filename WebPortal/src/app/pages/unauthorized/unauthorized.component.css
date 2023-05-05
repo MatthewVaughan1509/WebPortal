@@ -1,0 +1,15 @@
+div {
+    text-align: center;
+}
+
+.header {
+    margin: auto;
+    padding-top: 75px;
+    padding-bottom: 75px;
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+.content {
+    font-size: medium;
+}

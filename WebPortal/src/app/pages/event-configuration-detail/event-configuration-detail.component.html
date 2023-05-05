@@ -1,0 +1,209 @@
+<div class="header">
+    <div class="dx-fieldset-header">{{pageTitle}}</div>
+</div>
+
+<dx-validation-group #targetGroup>
+    <dx-box [disabled]="isDisabled">
+        <dxi-item [ratio]="1">
+            <dx-box direction="row">
+                <dxi-item [ratio]="0.5">
+                    <div class="dx-field">
+                        <div>Plant</div>
+                        <dx-select-box [dataSource]="plants" valueExpr="Id" [(value)]="eventConfiguration.PlantId"
+                            displayExpr="Name" placeholder="Select a plant..." (onValueChanged)="onPlantChanged($event)"
+                            [searchEnabled]="true" [readOnly]="plantReadOnly">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Plant is required.">
+                                </dxi-validation-rule>
+                            </dx-validator>
+                        </dx-select-box>
+                    </div>
+                </dxi-item>
+                <dxi-item [ratio]="0.5">
+                    <div class="dx-field padding-right">
+                        <div>Name</div>
+                        <dx-text-box [(value)]="eventConfiguration.Name" [showClearButton]="true" required="true"
+                            valueChangeEvent="keyup" (onValueChanged)="onNameChanged($event)">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Name is required.">
+                                </dxi-validation-rule>
+                            </dx-validator>
+                        </dx-text-box>
+                    </div>
+                </dxi-item>
+            </dx-box>
+
+            <dx-box direction="row">
+                <dxi-item [ratio]="0.25">
+                    <div class="dx-field">
+                        <div>Equipment Tag</div>
+                        <dx-select-box [dataSource]="equipmentTags" valueExpr="Id"
+                            [(value)]="eventConfiguration.EquipmentTagId" displayExpr="Name"
+                            placeholder="Select equipment tag..." [searchEnabled]="true">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Equipment tag is required.">
+                                </dxi-validation-rule>
+                            </dx-validator>
+                        </dx-select-box>
+                    </div>
+                </dxi-item>
+                <dxi-item [ratio]="0.25">
+                    <div class="dx-field">
+                        <div>Event Category</div>
+                        <dx-select-box [dataSource]="eventCategories" valueExpr="Id"
+                            [(value)]="eventConfiguration.EventCategoryId" displayExpr="Name"
+                            placeholder="Select event category..." (onValueChanged)="onEventCategoryChanged($event)"
+                            [searchEnabled]="true">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Event category is required.">
+                                </dxi-validation-rule>
+                            </dx-validator>
+                        </dx-select-box>
+                    </div>
+                </dxi-item>
+                <dxi-item [ratio]="0.5">
+                    <div class="dx-field padding-right">
+                        <div>Full Event Category</div>
+                        <dx-text-box [(value)]="eventCategoryDescription" [readOnly]="true"></dx-text-box>
+                    </div>
+                </dxi-item>
+            </dx-box>
+
+            <dx-box direction="row">
+                <dxi-item [ratio]="0.5">
+                    <div class="dx-field">
+                        <div>Determine Event By</div>
+                        <dx-select-box [dataSource]="eventSource" valueExpr="Id"
+                            [(value)]="eventConfiguration.EventSourceId" displayExpr="Name"
+                            placeholder="Select event source..." [searchEnabled]="true">
+                            <dx-validator>
+                                <dxi-validation-rule type="required" message="Event source is required.">
+                                </dxi-validation-rule>
+                            </dx-validator>
+                        </dx-select-box>
+                    </div>
+                </dxi-item>
+            </dx-box>
+        </dxi-item>
+    </dx-box>
+
+    <div id="tab-panel">
+        <dx-tab-panel #tabPanel [dataSource]="tabs" [selectedIndex]="activeTab" [loop]="false" [animationEnabled]="true"
+            [swipeEnabled]="true">
+            <div *dxTemplate="let tab of 'title'">
+                <span>{{tab.Name}}</span>
+            </div>
+            <div *dxTemplate="let tab of 'item'">
+                <div *ngIf="tab.Id == 1" class="tab-content">
+                    <dx-box direction="row" *ngIf="eventConfiguration.EventSourceId == 1" [disabled]="isDisabled">
+                        <dxi-item [ratio]="1">
+                            <div class="dx-field">
+                                <div>IP 21 Tag</div>
+                                <dx-select-box [dataSource]="ip21StartTags" [acceptCustomValue]="true" displayExpr="name"
+                                    valueExpr="name" [value]="eventConfiguration.StartIp21Tag" (onValueChanged)="onStartIp21TagChanged($event)"
+                                    (onCustomItemCreating)="addCustomItemStart($event)">
+                                </dx-select-box>
+                            </div>
+                        </dxi-item>
+                    </dx-box>
+                    <dx-box direction="row" *ngIf="eventConfiguration.EventSourceId == 2" [disabled]="isDisabled">
+                        <dxi-item [ratio]="1">
+                            <div class="dx-field">
+                                <div>Condition Name</div>
+                                <dx-select-box [searchEnabled]="true" [readOnly]="true"
+                                    placeholder="Select start condition...">
+                                </dx-select-box>
+                            </div>
+                        </dxi-item>
+                    </dx-box>
+                </div>
+                <div *ngIf="tab.Id == 2" class="tab-content">
+                    <dx-box direction="row" *ngIf="eventConfiguration.EventSourceId == 1" [disabled]="isDisabled">
+                        <dxi-item [ratio]="1">
+                            <div class="dx-field">
+                                <div>IP 21 Tag</div>
+                                <dx-select-box [dataSource]="ip21EndTags" [acceptCustomValue]="true" displayExpr="name"
+                                    valueExpr="name" [value]="eventConfiguration.EndIp21Tag" (onValueChanged)="onEndIp21TagChanged($event)"
+                                    (onCustomItemCreating)="addCustomItemEnd($event)">
+                                </dx-select-box>
+                            </div>
+                        </dxi-item>
+                    </dx-box>
+                    <dx-box direction="row" *ngIf="eventConfiguration.EventSourceId == 2" [disabled]="isDisabled">
+                        <dxi-item [ratio]="1">
+                            <div class="dx-field">
+                                <div>Condition Name</div>
+                                <dx-select-box [searchEnabled]="true" [readOnly]="true"
+                                    placeholder="Select end condition..."></dx-select-box>
+                            </div>
+                        </dxi-item>
+                    </dx-box>
+                </div>
+                <div *ngIf="tab.Id == 3" class="tab-content">
+                    <dx-box direction="row" width="100%">
+                        <dxi-item [ratio]="0.45">
+                            <div class="dx-field">
+                                <div class="gridCaption">Assigned Realtime Metrics</div>
+                                <dx-data-grid #assignedGridRef [height]="gridHeight" width="100%"
+                                    [dataSource]="assignedMetrics" [allowColumnResizing]="true"
+                                    [allowColumnReordering]="true" [focusedRowEnabled]="focusedRowEnabled"
+                                    keyExpr="PlantMetricId" [columnAutoWidth]="true" [showBorders]="true">
+                                    <dxo-search-panel [visible]="true"></dxo-search-panel>
+                                    <dxo-selection [mode]="selectionMode" [deferred]="true"></dxo-selection>
+                                    <dxo-paging [enabled]="false"></dxo-paging>
+                                    <dxo-sorting mode="multiple"></dxo-sorting>
+                                    <dxo-paging [enabled]="true" [pageSize]="50"></dxo-paging>
+                                    <dxo-filter-row [visible]="true"></dxo-filter-row>
+                                    <dxi-column dataField="MetricGroupName" sortOrder="asc"></dxi-column>
+                                    <dxi-column dataField="MetricName" sortOrder="asc"></dxi-column>
+                                </dx-data-grid>
+                            </div>
+                        </dxi-item>
+                        <dxi-item [ratio]="0.1" [disabled]="isDisabled">
+                            <div class="dx-field">
+                                <div class="buttonColumn paddingTop">
+                                    <dx-button text="< Add" type="default" (useSubmitBehavior)="false" width="180px"
+                                        (click)="add()">
+                                    </dx-button>
+                                </div>
+                                <div class="buttonColumn">
+                                    <dx-button text="Remove >" type="default" (useSubmitBehavior)="false" width="180px"
+                                        (click)="remove()">
+                                    </dx-button>
+                                </div>
+                            </div>
+                        </dxi-item>
+                        <dxi-item [ratio]="0.45">
+                            <div class="dx-field">
+                                <div class="gridCaption">Available Realtime Metrics</div>
+                                <dx-data-grid #availableGridRef [height]="gridHeight" width="100%"
+                                    [dataSource]="allMetrics" [allowColumnResizing]="true"
+                                    [allowColumnReordering]="true" [focusedRowEnabled]="focusedRowEnabled"
+                                    keyExpr="PlantMetricId" [columnAutoWidth]="true" [showBorders]="true">
+                                    <dxo-search-panel [visible]="true"></dxo-search-panel>
+                                    <dxo-selection [mode]="selectionMode" [deferred]="true"></dxo-selection>
+                                    <dxo-paging [enabled]="false"></dxo-paging>
+                                    <dxo-sorting mode="multiple"></dxo-sorting>
+                                    <dxo-paging [enabled]="true" [pageSize]="50"></dxo-paging>
+                                    <dxo-filter-row [visible]="true"></dxo-filter-row>
+                                    <dxo-header-filter [visible]="true"></dxo-header-filter>
+                                    <dxi-column dataField="MetricGroupName" sortOrder="asc"></dxi-column>
+                                    <dxi-column dataField="MetricName" sortOrder="asc"></dxi-column>
+                                </dx-data-grid>
+                            </div>
+                        </dxi-item>
+                    </dx-box>
+                </div>
+            </div>
+
+        </dx-tab-panel>
+
+        <div class="saveButton">
+            <dx-button text="Save" type="default" width="100px" [useSubmitBehavior]="true" [disabled]="isDisabled"
+                (onClick)="submitForm($event)">
+            </dx-button>
+        </div>
+
+    </div>
+
+</dx-validation-group>

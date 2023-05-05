@@ -1,0 +1,130 @@
+<div class="header">
+    <div class="dx-fieldset-header">Ingestion Plant Metrics</div>
+</div>
+
+<app-region-plant-search (changePlant)="changePlant($event)"></app-region-plant-search>
+
+<div id="tab-panel">
+    <dx-tab-panel #tabPanel [dataSource]="tabs" [selectedIndex]="activeTab" [loop]="false" [animationEnabled]="true"
+        [swipeEnabled]="true">
+        <div *dxTemplate="let tab of 'title'">
+            <span>{{tab.Name}}</span>
+        </div>
+        <div *dxTemplate="let tab of 'item'">
+            <div *ngIf="tab.Id == 1" class="tab-content">
+                <dx-box direction="row" width="100%">
+                    <dxi-item [ratio]="0.5">
+                        <div class="dx-field">
+                            <div class="gridCaption">Tracked Metrics</div>
+                            <dx-data-grid #trackedGridRef [height]="gridHeight" width="100%"
+                                [dataSource]="trackedMetrics" [allowColumnResizing]="true"
+                                [allowColumnReordering]="true" [focusedRowEnabled]="focusedRowEnabled" keyExpr="Id"
+                                [columnAutoWidth]="true" [showBorders]="true" (onRowPrepared)="onRowPrepared($event)"
+                                (onRowUpdated)="onRowUpdated($event)" (onExporting)="onExporting($event)" (onCellPrepared)="onCellPrepared($event)">
+                                <dxo-editing mode="row" [useIcons]="true" [allowUpdating]="hasEditPermission" [allowDeleting]="false"
+                                    [allowAdding]="false" [useIcons]="true">
+                                </dxo-editing>
+                                <dxo-toolbar>
+                                    <dxi-item location="after">
+                                        <div *dxTemplate>
+                                            <dx-button icon="refresh" (onClick)="getFormData()">
+                                            </dx-button>
+                                        </div>
+                                    </dxi-item>
+                                    <dxi-item name="exportButton"></dxi-item>
+                                    <dxi-item name="searchPanel"></dxi-item>
+                                </dxo-toolbar>
+                                <dxo-search-panel [visible]="true"></dxo-search-panel>
+                                <dxo-selection [mode]="selectionMode" [deferred]="true"></dxo-selection>
+                                <dxo-paging [enabled]="false"></dxo-paging>
+                                <dxo-sorting mode="multiple"></dxo-sorting>
+                                <dxo-paging [enabled]="true" [pageSize]="50"></dxo-paging>
+                                <dxo-filter-row [visible]="true"></dxo-filter-row>
+                                <dxo-header-filter [visible]="true"></dxo-header-filter>
+                                <dxo-export [enabled]="true"></dxo-export>
+                                <dxi-column dataField="Id" caption="" [allowEditing]="false" cellTemplate="trackedMetricTemplate" [allowFiltering]="false" [allowSorting]="false" [fixed]="true" fixedPosition="left"></dxi-column>
+                                <dxi-column dataField="MetricGroupName" sortOrder="asc" [allowEditing]="false"></dxi-column>
+                                <dxi-column dataField="MetricName" sortOrder="asc" [allowEditing]="false"></dxi-column>
+                                <dxi-column dataField="DefaultRollingAvgId" caption="Default Rolling Average">
+                                    <dxo-lookup [dataSource]="ingestionMovingAverages" displayExpr="Name" valueExpr="Id">
+                                    </dxo-lookup>
+                                </dxi-column>
+                                <dxi-column dataField="InActive" cellTemplate="selectActiveTemplate"></dxi-column>
+                                <dxi-column dataField="IngestionFrequencyId" caption="Ingestion Frequency"
+                                    sortOrder="asc">
+                                    <dxi-validation-rule type="required" message="Ingestion Frequency Type is required">
+                                    </dxi-validation-rule>
+                                    <dxo-lookup [dataSource]="ingestionFrequencies" displayExpr="Name" valueExpr="Id">
+                                    </dxo-lookup>
+                                </dxi-column>
+                                <dxi-column dataField="IngestionIntervalId" sortOrder="asc"
+                                    caption="Data Sampling Interval">
+                                    <dxi-validation-rule type="required" message="Ingestion Interval Type is required">
+                                    </dxi-validation-rule>
+                                    <dxo-lookup [dataSource]="ingestionIntervals" displayExpr="Name" valueExpr="Id">
+                                    </dxo-lookup>
+                                </dxi-column>
+                                <dxi-column dataField="LastIngestedTimeStamp" dataType="datetime"
+                                    format="yyyy-MM-dd HH:mm:ss" caption="Last Ingested Time" [allowEditing]="false">
+                                </dxi-column>
+                                <dxi-column type="buttons" name="btnEditDelete" [fixed]="true" fixedPosition="right">
+                                    <dxi-button name="edit"></dxi-button>
+                                    <dxi-button name="delete"></dxi-button>
+                                </dxi-column>
+                                <div *dxTemplate="let data of 'selectActiveTemplate'">
+                                    <dx-check-box [disabled]="true" [(value)]="data.value==null?false:data.value">
+                                    </dx-check-box>
+                                </div>
+                                <div *dxTemplate="let cell of 'trackedMetricTemplate'">
+                                    <div>
+                                      <i class="fa fa-1x fa-info-circle"></i>
+                                    </div>
+                                </div>                                
+                            </dx-data-grid>
+
+                            <dx-tooltip style="align-items: inherit">
+                                <div *dxTemplate="let data = data of 'content'" [innerHTML]="toolTipMessage">
+                                </div>
+                            </dx-tooltip>
+
+                        </div>
+                    </dxi-item>
+                    <dxi-item [ratio]="0.1" [disabled]="isDisabled">
+                        <div class="dx-field">
+                            <div class="buttonColumn paddingTop">
+                                <dx-button text="< Add" type="default" (useSubmitBehavior)="false" width="180px"
+                                    (click)="add()">
+                                </dx-button>
+                            </div>
+                            <div class="buttonColumn">
+                                <dx-button text="Remove >" type="default" (useSubmitBehavior)="false" width="180px"
+                                    (click)="remove()">
+                                </dx-button>
+                            </div>
+                        </div>
+                    </dxi-item>
+                    <dxi-item [ratio]="0.4">
+                        <div class="dx-field">
+                            <div class="gridCaption">Available Realtime Metrics</div>
+                            <dx-data-grid #availableGridRef [height]="gridHeight" width="100%" [dataSource]="allMetrics"
+                                [allowColumnResizing]="true" [allowColumnReordering]="true"
+                                [focusedRowEnabled]="focusedRowEnabled" keyExpr="PlantMetricId" [columnAutoWidth]="true"
+                                [showBorders]="true">
+                                <dxo-search-panel [visible]="true"></dxo-search-panel>
+                                <dxo-selection [mode]="selectionMode" [deferred]="true"></dxo-selection>
+                                <dxo-paging [enabled]="false"></dxo-paging>
+                                <dxo-sorting mode="multiple"></dxo-sorting>
+                                <dxo-paging [enabled]="true" [pageSize]="50"></dxo-paging>
+                                <dxo-filter-row [visible]="true"></dxo-filter-row>
+                                <dxo-header-filter [visible]="true"></dxo-header-filter>
+                                <dxi-column dataField="MetricGroupName" sortOrder="asc"></dxi-column>
+                                <dxi-column dataField="MetricName" sortOrder="asc"></dxi-column>
+                            </dx-data-grid>
+                        </div>
+                    </dxi-item>
+                </dx-box>
+            </div>
+        </div>
+    </dx-tab-panel>
+
+</div>

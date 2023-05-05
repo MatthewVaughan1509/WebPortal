@@ -1,0 +1,26 @@
+<dx-popup id="error-notification" *ngIf="showError" [width]="600" [height]="400" [showTitle]="true"
+    [title]="errorNotification.title ? errorNotification.title : 'Error !'" [dragEnabled]="false"
+    [closeOnOutsideClick]="true" [visible]="showError" (onShowing)="onPopupShowing($event)"
+    (onHiding)="onPopUpClosing($event)">
+    <div *dxTemplate="let data of 'content'">
+        <p *ngIf="errorNotification.message">
+            {{ errorNotification.message }}
+        </p>
+        <p *ngIf="!errorNotification.message">
+            We were unable to process your request due to technical difficulties.
+        </p>
+        <dx-accordion *ngIf="errorDataSource && errorDataSource.length > 0" #accordion [dataSource]="errorDataSource"
+            [collapsible]="true" [multiple]="false" [animationDuration]="300" [selectedIndex]="-1">
+            <div *dxTemplate="let error of 'title'">
+                <span>Technical Details</span>
+            </div>
+            <div *dxTemplate="let error of 'item'">
+                <div>
+                    <p>
+                        <span id="tech-details">{{error.TechnicalDetails}}</span>
+                    </p>
+                </div>
+            </div>
+        </dx-accordion>
+    </div>
+</dx-popup>
