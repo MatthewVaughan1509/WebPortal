@@ -17,13 +17,16 @@ export class PageDetailsComponent implements OnInit {
   title: string = "Edit Page";
   action: string = "Edit";
   useSubmitBehavior: boolean = true;
+  toolBarItems: any[] = [];
+  isMultiLineToolbar: boolean = true;
+  htmlText: any;
 
   constructor(private route: ActivatedRoute, private service: PageDetailsService) {
     this.loadForm();
   }
 
   loadForm() {
-    this.pageId = this.route.snapshot.queryParamMap.get('id');
+    this.pageId = this.route.snapshot.queryParamMap.get('pageid');
     if (this.pageId) {
       forkJoin([
         this.service.getPageById(this.pageId)
@@ -35,6 +38,7 @@ export class PageDetailsComponent implements OnInit {
       );
     }
     this.hasEditPermission = true; // This needs to be set from a permissions API.
+    this.toolBarItems = this.service.getToolbarItemsForHtmlEditor();
   }
 
   ngOnInit(): void {

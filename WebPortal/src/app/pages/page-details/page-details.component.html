@@ -4,14 +4,25 @@
             [readOnly]="false">
             <dxi-item [ratio]="1">
                 <div class="floatRight">
-                    <dx-button class="save-btn btnPaddingLeft" type="danger" text="Exit" (click)="cancel()"></dx-button>
-                    <dx-button class="save-btn btnPaddingLeft" type="success" [useSubmitBehavior]="useSubmitBehavior" text="Save"
-                        [visible]="hasEditPermission"></dx-button>
+                    <dx-button class="save-btn" type="danger" text="Exit" (click)="cancel()"></dx-button>
+                    <dx-button class="save-btn" type="success" [useSubmitBehavior]="useSubmitBehavior" text="Save" [visible]="hasEditPermission"></dx-button>
                 </div>
                 <div>
                     <h1>{{title}}</h1>
                 </div>
             </dxi-item>
+
+            <dxi-item editorType="dxTextBox" dataField="name">
+                <dxo-label text="Name"></dxo-label>
+                <dxi-validation-rule type="required" message="Name is required">
+                </dxi-validation-rule>
+            </dxi-item>
+
+            <dxi-item dataField="htmlText" editorType="dxHtmlEditor"
+            [editorOptions]="{ value: htmlText, height: '600px', toolbar: { multiline: isMultiLineToolbar, items: toolBarItems } }">
+            <dxo-label text="Html"></dxo-label>
+            </dxi-item>
+
         </dx-form>
     </form>
 </div>

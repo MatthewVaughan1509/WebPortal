@@ -35,4 +35,11 @@ export class PageDetailsService {
     //this is to display error/api exception message to the user
     return throwError(errorMessage);
   }
+
+  getToolbarItemsForHtmlEditor() {
+    return [ "background","bold","color"
+    ,{ name: "font", acceptedValues: ['Arial', 'Courier New', 'Georgia', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Verdana']} 
+    ,{ name: "size", acceptedValues: ['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt'] }
+    ,"italic","link","image","strike","subscript","superscript","underline","blockquote","header","increaseIndent","decreaseIndent","orderedList","bulletList","alignLeft","alignCenter","alignRight","alignJustify","codeBlock","variable","separator","undo","redo","clear","cellProperties","tableProperties","insertTable","insertHeaderRow","insertRowAbove","insertRowBelow","insertColumnLeft","insertColumnRight","deleteColumn","deleteRow","deleteTable"];
+  }
 }
