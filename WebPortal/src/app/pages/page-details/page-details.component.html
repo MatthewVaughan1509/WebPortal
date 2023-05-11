@@ -1,22 +1,17 @@
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-<p>page-details works!</p>
-
+<div class="content-block">
+    <form (submit)="submit($event)">
+        <dx-form id="form" [formData]="pageDetails" [colCount]="1" labelLocation="left" [showColonAfterLabel]="true"
+            [readOnly]="false">
+            <dxi-item [ratio]="1">
+                <div class="floatRight">
+                    <dx-button class="save-btn btnPaddingLeft" type="danger" text="Exit" (click)="cancel()"></dx-button>
+                    <dx-button class="save-btn btnPaddingLeft" type="success" [useSubmitBehavior]="useSubmitBehavior" text="Save"
+                        [visible]="hasEditPermission"></dx-button>
+                </div>
+                <div>
+                    <h1>{{title}}</h1>
+                </div>
+            </dxi-item>
+        </dx-form>
+    </form>
+</div>
