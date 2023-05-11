@@ -28,18 +28,12 @@ export class AppSettingsService {
   }
 
   readSettings(): AppSetings {
-    return this.settings;
+    let appSetting = new AppSetings();
+    appSetting.baseUrl = "https://localhost:7279/api/";
+    return appSetting;
   }
 }
 
 export class AppSetings {
-  stage: string;
-  build: string;
-  insightsApiUrl: string;
-  insightsApiScope: string;
-  plantDataCoreUrl: string;
-  appId: number;
-  ip21Url: string;
-  chartUrl: string;
-  clientId: string;
+  baseUrl: string;
 }

@@ -1,0 +1,52 @@
+<p>This page demonstrates a Dev Extreme Data Grid with CRUD functions</p>
+
+<dx-data-grid id="pagesGrid" [dataSource]="gridItems" keyExpr="id" [allowColumnReordering]="true"
+    [allowColumnResizing]="true" [showBorders]="true" [showColumnLines]="true" [showRowLines]="true"
+    (onExporting)="onExporting($event)" [focusedRowEnabled]="true">
+    <dxo-paging [enabled]="true" [pageSize]="50"></dxo-paging>
+    <dxo-header-filter [visible]="true"></dxo-header-filter>
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+    <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-sorting mode="multiple"></dxo-sorting>
+    <dxo-filter-panel [visible]="true"></dxo-filter-panel>
+    <dxo-export [enabled]="true"></dxo-export>
+
+    <dxo-editing mode="row" [useIcons]="true" [allowUpdating]="hasEditPermission"
+    [allowDeleting]="hasDeletePermission" [allowAdding]="false" [texts]="{confirmDeleteMessage: ''}">
+    </dxo-editing>
+
+    <dxo-toolbar>
+        <dxi-item location="after">
+            <div *dxTemplate>
+                <dx-button icon="refresh" (onClick)="refreshDataGrid()">
+                </dx-button>
+            </div>
+        </dxi-item>
+        <dxi-item location="after">
+            <div *dxTemplate>
+                <dx-button icon="plus" (onClick)="addIconClick()" [visible]="hasAddPermission">
+                </dx-button>
+            </div>
+        </dxi-item>
+        <dxi-item name="exportButton" (onClick)="onExporting($event)"></dxi-item>
+        <dxi-item name="searchPanel"></dxi-item>
+    </dxo-toolbar>
+
+    <dxi-column dataField="name" caption="Name">
+    </dxi-column>
+    <dxi-column dataField="tags" caption="Tags">
+    </dxi-column>
+    <dxi-column dataField="referencedManuals" caption="Referenced Manual">
+    </dxi-column>
+    <dxi-column dataField="modifiedBy" caption="Modified By" [allowEditing]="false" width="10%">
+    </dxi-column>
+    <dxi-column dataField="modifiedOn" caption="Modified On" dataType="datetime" format="yyyy-MM-dd HH:mm:ss"
+        [allowEditing]="false" width="8%">
+    </dxi-column>
+    <dxi-column type="buttons" [width]="60">
+        <dxi-button name="edit" icon="edit" [onClick]="editIconClick"></dxi-button>
+        <dxi-button name="delete" icon="trash"></dxi-button>
+    </dxi-column>
+
+</dx-data-grid>

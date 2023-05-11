@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AppSetings, AppSettingsService } from "./app-settings.service";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class WindowService {
 
   appSettings: AppSetings;

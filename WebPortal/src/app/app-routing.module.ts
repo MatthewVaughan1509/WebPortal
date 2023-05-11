@@ -1,14 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MsalGuard } from '@azure/msal-angular';
-import { AuthGuardService } from './shared/services/auth.service';
-import { PermissionGuardService } from './shared/services/permission-guard.service';
-import { EventConfigurationComponent } from './pages/event-configuration/event-configuration.component';
-import { EventConfigurationDetailComponent } from './pages/event-configuration-detail/event-configuration-detail.component';
 import { HomeComponent } from './pages/home/home.component';
-import { IngestionPlantMetricComponent } from './pages/ingestion-plant-metric/ingestion-plant-metric.component';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 import { RouteUrl } from './entities/routeUrl';
+import { DemoPageComponent } from './pages/demo-page/demo-page.component';
+import { PageDetailsComponent } from './pages/page-details/page-details.component';
 
 const routes: Routes = [
   {
@@ -26,12 +22,12 @@ const routes: Routes = [
     path: 'code',
     component: HomeComponent
   },
-  { path: '', component: HomeComponent },
-  { path: 'home', component: HomeComponent },
-  { path: RouteUrl.EventConfiguration, component: EventConfigurationComponent, canActivate: [MsalGuard, AuthGuardService, PermissionGuardService], data: { url: RouteUrl.EventConfiguration }  },
-  { path: RouteUrl.EventConfigurationDetail, component: EventConfigurationDetailComponent, canActivate: [MsalGuard, AuthGuardService, PermissionGuardService], data: { url: RouteUrl.EventConfigurationDetail }  },
-  { path: RouteUrl.IngestionPlantMetric, component: IngestionPlantMetricComponent, canActivate: [MsalGuard, AuthGuardService, PermissionGuardService], data: { url: RouteUrl.IngestionPlantMetric } },
+  { path: '', component: DemoPageComponent },
+  { path: 'home', component: DemoPageComponent },
   { path: RouteUrl.Unauthorized, component: UnauthorizedComponent },
+  { path: RouteUrl.DemoRoute, component: DemoPageComponent },
+  { path: RouteUrl.DemoDetails, component: PageDetailsComponent },
+  { path: `${RouteUrl.DemoDetails}/:pageid`, component: PageDetailsComponent },
   { path: '**', redirectTo: 'home' }
 ];
 

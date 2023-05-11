@@ -1,8 +1,5 @@
 export enum RouteUrl {
-    EventConfiguration = "eventconfiguration",
-    EventConfigurationDetail = "eventconfigurationdetail",
-    IngestionPlantMetric = "ingestionplantmetrics",
-    IngestionPlantMetricNotProcessing = "ingestionplantmetricnotprocessing",
-    ReportByPlantAndEventCategory = "reportbyplantandeventcategory",
+    DemoRoute = "demo",
+    DemoDetails = "demodetails",
     Unauthorized = "unauthorized"
 }
