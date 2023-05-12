@@ -4,6 +4,7 @@ import { PageDetailsService } from './page-details.service';
 import { PageDetails } from 'src/app/entities/page-details';
 import { forkJoin } from 'rxjs';
 import { DxFormComponent } from 'devextreme-angular';
+import { ToastService } from 'src/app/shared/components/toast/toast.service';
 
 @Component({
   selector: 'app-page-details',
@@ -22,10 +23,11 @@ export class PageDetailsComponent implements OnInit {
   toolBarItems: any[] = [];
   isMultiLineToolbar: boolean = true;
   htmlText: any;
+  isLoadPanelVisible: boolean = false;
 
   @ViewChild(DxFormComponent, { static: false }) form: DxFormComponent
 
-  constructor(private route: ActivatedRoute, private service: PageDetailsService) {
+  constructor(private route: ActivatedRoute, private service: PageDetailsService, private _toastService: ToastService ) {
     this.loadForm();
   }
 
@@ -49,7 +51,25 @@ export class PageDetailsComponent implements OnInit {
   }
 
   submit(e: any) {
-    alert("Submit");
+    let result: any = this.form.instance.validate();
+    if (result && result.isValid) {      
+      if (this.pageId) {
+        this.updatePage();
+      } else {
+      }
+    }
+    e.preventDefault();
+  }
+
+  updatePage() {
+    this.isLoadPanelVisible = true;
+    this.service.updatePage(this.pageDetails).subscribe( results => {
+      this._toastService.success("Update worked!");
+      this.isLoadPanelVisible = false;
+    }, error => {
+      this._toastService.error("Update failed!");
+      this.isLoadPanelVisible = false;      
+    });
   }
 
   cancel() {

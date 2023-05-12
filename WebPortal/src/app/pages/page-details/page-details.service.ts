@@ -22,6 +22,10 @@ export class PageDetailsService {
     .pipe(catchError(this.handleError));
   }
 
+  updatePage(pageDetails: PageDetails) {
+    return this.http.post(`${this.baseUrl}Page/UpdatePage`, pageDetails).pipe(catchError(err => this.handleError(err)));
+  }
+
   private handleError(err: any) {
     let errorMessage = '';
     if (err.error instanceof ErrorEvent) {
