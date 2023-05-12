@@ -1,7 +1,7 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { DxAccordionModule, DxBoxModule, DxButtonModule, DxCheckBoxModule, DxDataGridModule, DxFormModule, DxLoadPanelModule, DxMenuModule, DxTabPanelModule, DxTextAreaModule, DxTextBoxModule, DxPopupModule, DxSelectBoxModule, DxToastModule, DxTooltipModule, DxValidatorModule, DxValidationGroupModule, DxDateBoxModule } from 'devextreme-angular';
+import { DxAccordionModule, DxBoxModule, DxButtonModule, DxCheckBoxModule, DxDataGridModule, DxFormModule, DxLoadPanelModule, DxMenuModule, DxTabPanelModule, DxTextAreaModule, DxTextBoxModule, DxPopupModule, DxSelectBoxModule, DxToastModule, DxTooltipModule, DxValidatorModule, DxValidationGroupModule, DxDateBoxModule, DxHtmlEditorModule } from 'devextreme-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppSettingsService } from './shared/services/app-settings.service';
@@ -139,7 +139,8 @@ export function setSettings(configService: AppSettingsService) {
     SideNavMenuModule,
     TopNavMenuModule,
     DxDateBoxModule,
-    DxTooltipModule
+    DxTooltipModule,
+    DxHtmlEditorModule
   ],
   providers: [
     AppSettingsService,
