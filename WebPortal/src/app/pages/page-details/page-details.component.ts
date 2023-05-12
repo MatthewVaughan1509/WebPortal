@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PageDetailsService } from './page-details.service';
 import { PageDetails } from 'src/app/entities/page-details';
 import { forkJoin } from 'rxjs';
+import { DxFormComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-page-details',
   templateUrl: './page-details.component.html',
   styleUrls: ['./page-details.component.scss']
 })
+
 export class PageDetailsComponent implements OnInit {
 
   pageId: string;
@@ -20,6 +22,8 @@ export class PageDetailsComponent implements OnInit {
   toolBarItems: any[] = [];
   isMultiLineToolbar: boolean = true;
   htmlText: any;
+
+  @ViewChild(DxFormComponent, { static: false }) form: DxFormComponent
 
   constructor(private route: ActivatedRoute, private service: PageDetailsService) {
     this.loadForm();
